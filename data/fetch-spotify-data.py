@@ -28,7 +28,7 @@ command = 'curl -sS -X "GET"'
 PARAM = "&type=track&limit=1&offset=0"
 ACC = "Accept: application/json"
 TYP = "Content-Type: application/json"
-AUTH = "Authorization: Bearer " ## ENTER AUTH KEY ##
+AUTH = "Authorization: Bearer BQB7waBnyiktoQ6U2lbcH-duW7aiLny6KMptgbUYQ-_-68ufLMntksN5vtdXfu5kHGRTzBfzTvQB7V1XWZR9oKFtYZbID-Wvi9R3-d0wE7lPEFYfQGn5P0HXSPUEXTEu-HFhukHvyuQT" ## ENTER AUTH KEY ##
 
 # Extract the tracks from the csv file
 entries = []
@@ -73,6 +73,7 @@ for i, q in enumerate(queries):
     song_name = re.sub(r"[^a-zA-Z0-9 ]+", '', song_name).lower()
     artist_names = [re.sub(r"[^a-zA-Z0-9 ]+", '', a).lower() for a in artist_names]
 
+    # Compare song similarity
     max_similarity = 0
     max_artist = ""
     for artist in artist_names:
@@ -83,24 +84,19 @@ for i, q in enumerate(queries):
 
     similarity = similar(song_name, db_song_name) + max_similarity
     if (similarity >= 1.5):
-        if (similarity < 2.0):
-            track_id = _id
-            found += 1
-
-    if (track_id==""):
-        continue
+        track_id = _id
 
     # Get song features
-    feat = subprocess.check_output(f'{command} "{URL_FEATURES}{track_id}" -H "{ACC}" -H "{TYP}" -H "{AUTH}"', shell=True)
-    # Deserialize from JSON
-    serialized = json.loads(feat, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
-    features += [serialized]
-    idx += [i]
+    if (track_id!=""):
+        feat = subprocess.check_output(f'{command} "{URL_FEATURES}{track_id}" -H "{ACC}" -H "{TYP}" -H "{AUTH}"', shell=True)
+        # Deserialize from JSON
+        serialized = json.loads(feat, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
+        if len(serialized) > 1:
+            features += [serialized]
+            idx += [i]
+            found += 1
 
 print(f"Songs found: {found}")
-
-# Get rid of 404s
-features = [f for f in features if len(list(f)) > 1]
 
 # Write all to csv 
 # Re-ordering the dataset to prioritize musical terms and meta-data
@@ -110,6 +106,6 @@ append.writelines(header_line)
 
 # Need to cross-reference the song indices that were compatible with the Spotify data
 for j, f in enumerate(features):
-    string = str(f.id) + "," + pairs[j][0] + "," + pairs[j][1] + "," + pairs[j][2] + "," + str(f.duration_ms) + "," + str(f.key) + "," + str(f.tempo) + "," + str(f.time_signature) + "," + str(f.danceability) + "," + str(f.energy)  + "," + str(f.loudness) + "," + str(f.mode) + "," + str(f.speechiness) + "," + str(f.acousticness) + "," + str(f.instrumentalness) + "," + str(f.liveness) + "," + str(f.valence) + "\n"
+    string = str(f.id) + "," + pairs[idx[j]][0] + "," + pairs[idx[j]][1] + "," + pairs[idx[j]][2] + "," + str(f.duration_ms) + "," + str(f.key) + "," + str(f.tempo) + "," + str(f.time_signature) + "," + str(f.danceability) + "," + str(f.energy)  + "," + str(f.loudness) + "," + str(f.mode) + "," + str(f.speechiness) + "," + str(f.acousticness) + "," + str(f.instrumentalness) + "," + str(f.liveness) + "," + str(f.valence) + "\n"
     append.writelines(string)
 append.close()
