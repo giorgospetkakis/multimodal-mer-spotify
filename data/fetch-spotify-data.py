@@ -11,7 +11,7 @@ URL_FEATURES = "https://api.spotify.com/v1/audio-features/"
 PARAM = "&type=track&limit=10&offset=5"
 ACC = "Accept: application/json"
 TYP = "Content-Type: application/json"
-AUTH = "Authorization: Bearer BQAigNqnUXgZwMNHD_2Wp37g---fd8znffsUpkvO3TZPqDIu2136dbC3oQSM2qt5x_2aROgJgOzOSL1uui3tAuSoRmqgT0Hzi8eBjyRUqXBQnM1VRan28squuEI_N-09aW-PQAj2vt0Y" ## ENTER AUTH KEY ##
+AUTH = "Authorization: Bearer KEY" ## ENTER AUTH KEY ##
 
 
 # Extract the tracks from the csv file
