@@ -32,7 +32,7 @@ AUTH = "Authorization: Bearer BQB7waBnyiktoQ6U2lbcH-duW7aiLny6KMptgbUYQ-_-68ufLM
 
 # Extract the tracks from the csv file
 entries = []
-with open('MoodyLyrics4Q/MoodyLyrics4Q.csv', newline='', encoding='utf-8') as f:
+with open('data/raw/MoodyLyrics4Q.csv', newline='', encoding='utf-8') as f:
     reader = csv.reader(f)
     for row in reader:
         entries += [row]
@@ -101,7 +101,7 @@ print(f"Songs found: {found}")
 # Write all to csv 
 # Re-ordering the dataset to prioritize musical terms and meta-data
 header_line = "id,artist,title,mood,duration_ms,key,tempo,time_signature,danceability,energy,loudness,mode,speechiness,acousticness,instrumentalness,liveness,valence\n"
-append = open("SpotifyData-1.csv", "a")
+append = open("data/raw/SpotifyData-1.csv", "a")
 append.writelines(header_line)
 
 # Need to cross-reference the song indices that were compatible with the Spotify data
