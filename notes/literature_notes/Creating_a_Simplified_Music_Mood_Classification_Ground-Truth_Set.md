@@ -17,4 +17,4 @@
 - 3 obtained mood clusters as simplified ground-truth set (aggressive-angry, calm-mellow, and upbeat-happy as top results in each cluster)
 
 ## Potential usefulness
-- Maybe useful for model validation depending on our approach?
+- Maybe useful for evaluating our model depending on our approach?
