@@ -1,8 +1,5 @@
 # CREATING A SIMPLIFIED MUSIC MOOD CLASSIFICATION GROUND-TRUTH SET
 
-## Notes
-
-
 ### Hypothesis/research question
 - Ground-truth set needed to evaluate mood-based music information retrieval systems
 
@@ -20,3 +17,4 @@
 - 3 obtained mood clusters as simplified ground-truth set (aggressive-angry, calm-mellow, and upbeat-happy as top results in each cluster)
 
 ## Potential usefulness
+- Maybe useful for model validation depending on our approach?
