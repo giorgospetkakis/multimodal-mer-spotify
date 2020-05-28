@@ -28,7 +28,7 @@ stop_words = set(stopwords.words('english'))
 def get_lyrics():
     print("Loading Lyrics...")
 
-    pattern = re.compile(r"\[.*\]|[oaOA]+h+")
+    pattern = re.compile(r"\[.*\]|[oaOA]+h+|[\?\.\,\'\!\;\:\(\)\`]+")
     lyrics = []
     files = os.listdir("data/lyrics/")
     idx = [int(f.split(".")[0]) for f in files]
@@ -44,7 +44,10 @@ def get_mood():
     mood_vecs = [np.argmax(x) for x in d.iloc[:,-4:].to_numpy()]
     return np.array(mood_vecs)
 
-X, idx = get_lyrics() ; y = get_mood()
+
+X, idx = get_lyrics() ; y = get_mood()[idx]
+axis = np.sort(np.hstack((np.where(y==0), np.where(y==1))))
+X = X[axis,].reshape(axis.shape[1]) ; y = y[axis,].reshape(axis.shape[1])
 
 
 class TfidfEmbeddingVectorizer(object):
