@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 
 data/MoodyCorpus2
+data/Twitter
 *.DS_Store
